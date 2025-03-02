@@ -114,7 +114,59 @@ kubectl config current-context
 
 ![image](https://github.com/user-attachments/assets/0341233c-3e91-48fe-bec1-79a3bd7d3db2)
 
+kubectl get sa
+
+![image](https://github.com/user-attachments/assets/64ff9b1e-ecea-4023-9491-aabfca8b088c)
+
+ kubectl apply -f complete-deploy.yaml
+ kubectl get po
+![image](https://github.com/user-attachments/assets/f39e173f-f6e9-43cf-9850-0e8ba8f9bff3)
+
+We can access these app if we change the frontendproxy to loadbalancer - but that not a best practise we can use ingress controller to access the main page
+
+commands to configure IAM OIDC provider
+
+ export cluster_name=my-eks-cluster
+
+ oidc_id=$(aws eks describe-cluster --name $cluster_name --query "cluster.identity.oidc.issuer" --output text | cut -d '/' -f 5)
+
+![image](https://github.com/user-attachments/assets/940454f3-8f70-4d68-b333-46271368634a)
 
 
+Download IAM policy
+curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.11.0/docs/install/iam_policy.json
+
+Create IAM Policy
+
+aws iam create-policy \
+    --policy-name AWSLoadBalancerControllerIAMPolicy \
+    --policy-document file://iam_policy.json
+
+Create IAM Role
+
+eksctl create iamserviceaccount \
+  --cluster=my-eks-cluster \
+  --namespace=kube-system \
+  --name=aws-load-balancer-controller \
+  --role-name AmazonEKSLoadBalancerControllerRole \
+  --attach-policy-arn=arn:aws:iam::767397700362:policy/AWSLoadBalancerControllerIAMPolicy \
+  --approve
+
+
+Installing eksctl
+```
+# for ARM systems, set ARCH to: `arm64`, `armv6` or `armv7`
+ARCH=amd64
+PLATFORM=$(uname -s)_$ARCH
+
+curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
+
+# (Optional) Verify checksum
+curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check
+
+tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
+
+sudo mv /tmp/eksctl /usr/local/bin
+```
 
 
