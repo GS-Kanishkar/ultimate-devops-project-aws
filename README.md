@@ -244,3 +244,15 @@ access http://gskanishkar.com
 ![image](https://github.com/user-attachments/assets/b2e5a81c-9bcb-4509-a177-e626ae2828bf)
 
 
+
+
+Deleting the created Resources 
+
+delete the eks and vpc by terraform destroy
+
+``` terraform destroy -auto-approve ```
+
+![image](https://github.com/user-attachments/assets/43bb9b1e-7856-4d48-a125-f88fe194f71f)
+
+
+
