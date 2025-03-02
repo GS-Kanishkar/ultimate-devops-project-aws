@@ -143,15 +143,16 @@ aws iam create-policy \
     --policy-document file://iam_policy.json
 
 Create IAM Role
-
+```
 eksctl create iamserviceaccount \
   --cluster=my-eks-cluster \
   --namespace=kube-system \
   --name=aws-load-balancer-controller \
   --role-name AmazonEKSLoadBalancerControllerRole \
   --attach-policy-arn=arn:aws:iam::767397700362:policy/AWSLoadBalancerControllerIAMPolicy \
+  --override-existing-serviceaccounts \
   --approve
-
+```
 
 Installing eksctl
 ```
@@ -189,7 +190,11 @@ Deploy ALB controller
 
 ``` helm repo update eks```
 
-``` helm install aws-load-balancer-controller eks/aws-load-balancer-controller \            
+![image](https://github.com/user-attachments/assets/da836e36-72d7-4438-8ced-4c937b0fa5fa)
+
+
+```
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller \            
   -n kube-system \
   --set clusterName=my-eks-cluster \
   --set serviceAccount.create=false \
@@ -197,3 +202,45 @@ Deploy ALB controller
   --set region=us-west-2 \
   --set vpcId=vpc-0b1557cc1549be9be
 ```
+![image](https://github.com/user-attachments/assets/a6af23fe-3659-4c23-b5f1-095f70a08872)
+
+``` kubectl get po -n kube-system ```
+ ``` kubectl get deploy -n kube-system ```
+ 
+![image](https://github.com/user-attachments/assets/c70de6d2-0770-4002-8adf-0f3efa3c5c12)
+
+
+Create ingress 
+
+apply the ingress.yaml file
+``` kubectl apply -f ingress.yaml ```
+``` kubectl get ing ```
+
+![image](https://github.com/user-attachments/assets/d9eeadf8-b272-4530-b0a4-992068951384)
+
+check the loadbalancer 
+
+![image](https://github.com/user-attachments/assets/ff7b2a22-4803-4178-9636-6a644a72870e)
+
+``` nslookup k8s-default-frontend-6e54782b3e-2054128454.us-west-2.elb.amazonaws.com ```
+![image](https://github.com/user-attachments/assets/be4f6b07-c7a7-41b3-b102-654d124b5b6f)
+
+add the loadbalancer ip on the host file
+Windows ->  C:\Windows\System32\drivers\etc\hosts 
+
+access http://gskanishkar.com
+
+![image](https://github.com/user-attachments/assets/44824de7-d98a-45d8-8f50-4ca249387d6f)
+
+![image](https://github.com/user-attachments/assets/50a0e440-8cb6-4d95-bc9e-a5c2979c5c0d)
+
+![image](https://github.com/user-attachments/assets/4aca4199-f440-4026-834c-2bc4e5c27706)
+
+![image](https://github.com/user-attachments/assets/ca859de8-a3af-4ac1-b320-029b308400c7)
+
+
+![image](https://github.com/user-attachments/assets/6767cec9-d2d0-41cd-ae9d-0f80e553c00a)
+
+![image](https://github.com/user-attachments/assets/b2e5a81c-9bcb-4509-a177-e626ae2828bf)
+
+
