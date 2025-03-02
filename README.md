@@ -254,5 +254,17 @@ delete the eks and vpc by terraform destroy
 
 ![image](https://github.com/user-attachments/assets/43bb9b1e-7856-4d48-a125-f88fe194f71f)
 
+delete the ec2 instance
+
+![image](https://github.com/user-attachments/assets/003e0f37-8d8b-48a7-bba3-9c1c5e3f355a)
+
+Delete S3 Bucket
+![image](https://github.com/user-attachments/assets/f56e3e4a-da8a-4f1d-ae72-a6d5158a30c2)
+
+delete DynamoDB
+
+![image](https://github.com/user-attachments/assets/6a309c6e-9924-4b2d-9ebd-cb60a1fdddf9)
+
+![image](https://github.com/user-attachments/assets/56e1107b-708b-49e5-a9d0-a189b45bfd95)
 
 
