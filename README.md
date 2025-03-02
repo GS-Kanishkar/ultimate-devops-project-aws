@@ -169,4 +169,31 @@ tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
 sudo mv /tmp/eksctl /usr/local/bin
 ```
 
+![image](https://github.com/user-attachments/assets/e4d201cc-dae4-4b60-9fde-ed051d105eec)
 
+
+Install helm
+
+```
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+```
+helm version
+
+![image](https://github.com/user-attachments/assets/eacabcb4-37e0-48c2-b7dd-7ac798d90014)
+
+Deploy ALB controller
+
+``` helm repo add eks https://aws.github.io/eks-charts ```
+
+``` helm repo update eks```
+
+``` helm install aws-load-balancer-controller eks/aws-load-balancer-controller \            
+  -n kube-system \
+  --set clusterName=my-eks-cluster \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller \
+  --set region=us-west-2 \
+  --set vpcId=vpc-0b1557cc1549be9be
+```
