@@ -1,4 +1,4 @@
-# Notes for Ultimate DevOps Project and Resume Preparation Udemy Course
+# This file has the complete steps i did to achieve this project 
 
 - This repository contains the complete notes for the Ultimate DevOps Project and Resume Preparation course prepared by `Abhishek Veeramalla` on Udemy.
 
