@@ -177,32 +177,29 @@ EKS
 ![image](https://github.com/user-attachments/assets/dcd2d4bf-0fdf-4e7b-a409-255c1aefa593)
 
 ## 4. Connect `kubectl` to the EKS Cluster  
+Once EKS is installed we need to connect to eks from our ec2 instance for that we already insatlled kubectl 
 
 ### ✅ View `kubectl` Configuration  
-To check the current `kubectl` configuration, run:  
+To check the current kubectl configuration, run:  
 
 ```sh
 kubectl config view
+```
 
 ### ✅ Check the Current Context  
-Verify which cluster `kubectl` is connected to:  
+Verify which cluster kubectl is connected to:  
 
 ```sh
 kubectl config current-context
-
-
-connect kubectl to the eks cluster
-
-kubectl config view 
-
-kubectl config current-context
+```
 
 ![image](https://github.com/user-attachments/assets/e030849b-d936-420e-9f95-cf5f360088b7)
 
+### Run the following command to connect kubectl to the EKS cluster
 
-aws eks update-kubeconfig --region <your-region> --name <your-cluster-name>
+``` aws eks update-kubeconfig --region <your-region> --name <your-cluster-name>
 aws eks update-kubeconfig --region us-west-2 --name my-eks-cluster
-
+```
 
 kubectl config current-context
 
