@@ -6,18 +6,24 @@ This file contains the **step-by-step process** of how I completed the **Ultimat
 I have **implemented all the components** from the course, and I have documented the **entire process with detailed notes** below. This guide serves as a **reference** for setting up a complete DevOps pipeline using AWS, Terraform, Kubernetes, and other essential tools.  
 
 
-  
+### 🔹 Created an EC2 instance on AWS
+ Connected to the instance using SSH
 ### 🔹 First I created a EC2 instance on AWS and then i entered into the ec2 instance to install all the necessary binaries
   
-  ``` ssh -i keypair.pem ubuntu@xxxxxxx(ec2 instance ip) ```
+  ```
+ssh -i keypair.pem ubuntu@<EC2_INSTANCE_IP>
+ ```
 
-  ### 🔹 Below Binaries are installed for this Project
-- Kubectl
-- Terraform
-- Git
-- AWS CLI
-- Eksctl -> CLI tool for creating and managing EKS clusters.
-- Helm   -> Package manager for Kubernetes
+## 🚀 Installed the Required Binaries
+
+ Installed the required binaries for this project:
+
+ **Kubectl** → *CLI tool to interact with Kubernetes clusters*  
+ **Terraform** → *Infrastructure as Code (IaC) tool*  
+ **Git** → *Version control system*  
+ **AWS CLI** → *Command-line interface for AWS services*  
+ **Eksctl** → *CLI tool for creating and managing EKS clusters*  
+ **Helm** → *Kubernetes package manager*
 
   
   ### 🔹 Kubectl Installation
