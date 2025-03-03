@@ -2,24 +2,41 @@
 
 - This file contains the step by step process how i complete the Ultimate DevOps Project and Resume Preparation course prepared by `Abhishek Veeramalla` on Udemy.
   
-- First I created a EC2 instance
-- then i entered into the ec2 instance
+- First I created a EC2 instance on AWS and then i entered into the ec2 instance to install all the necessary binaries
+  
   ``` ssh -i keypair.pem ubuntu@xxxxxxx(ec2 instance ip) ```
 
-- Then i installed all the necessary binaries to run this project
-  ### kubectl
-- Install kubectl binary with curl on Linux
-  ```  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" ```
-- Validate the binary (optional)
- ```  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256" ```
- ```  echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check ```
+  ### Below Binaries are installed for thsi Project
+- Kubectl
+- Terraform
+
   
-- ![image](https://github.com/user-attachments/assets/2b3edd8a-97ff-42a5-a2d4-2176d7bd5e23)
+  ### kubectl
+- Official Docs
+  ```
+  https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+  ```
+- Install kubectl binary with curl on Linux
+  ```
+  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  ```
+- Validate the binary (optional)
+ ```
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+```
+ ``` 
+ echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+ ```
+ ![image](https://github.com/user-attachments/assets/2b3edd8a-97ff-42a5-a2d4-2176d7bd5e23)
 
 - Install kubectl
-  ``` sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl ```
+  ```
+  sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+  ```
 - cmd to check the kubectl version
-  ``` kubectl version --client ```
+  ```
+   kubectl version --client
+  ```
   
   ![image](https://github.com/user-attachments/assets/3dd5ef59-3cde-4324-83b5-f0733fe004eb)
 
