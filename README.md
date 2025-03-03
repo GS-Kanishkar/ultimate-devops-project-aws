@@ -111,42 +111,65 @@ aws --version
 ![image](https://github.com/user-attachments/assets/c3c48036-ad74-4d0a-8036-80f553db2902)
 
 - After AWS CLI Installation , we need to connect from the ec2
-
+```
   aws configure
   AWS Access Key ID [None]: YOUR_ACCESS_KEY
   AWS Secret Access Key [None]: YOUR_SECRET_KEY
   Default region name [None]: us-west-2  # Change to us-west-2
   Default output format [None]: json
+```
 
 ### S3 Bucket creation ( Backend Storage for Terraform State )
 
 -  Terraform needs to store its state file (terraform.tfstate) to track resources.Instead of storing it locally, we use S3 to ensure state persistence, collaboration, and versioning.
  - Create a S3 Bucket with a unique name for the terraform state locking
  -  Go to AWS Console → S3 → Create Bucket (e.g., terraform-state-bucket).
+ -  
    ![image](https://github.com/user-attachments/assets/a9b9a91c-c192-4c1a-bed2-4736a76192e9)
 
 ### DynamoDB (State Locking) 
 - When multiple people run Terraform, there's a risk of state corruption if two apply commands run at the same time.DynamoDB provides state locking to prevent concurrent modifications.
-Go to AWS Console → DynamoDB → Create Table
--- Table Name: terraform-state-lock
--- Partition Key: LockID (String)
+- Go to AWS Console → DynamoDB → Create Table
+- Table Name: terraform-state-lock
+- Partition Key: LockID (String)
 
-####After creation of s3 and Terraform , we are good to create the AWS Resourses ( VPC components , EKS)
-
-  ```
+#### After creation of s3 and Dynamo DB, Now, we are ready to create AWS Resources!
+1. Initialize Terraform
+- This command initializes Terraform, downloads provider plugins, and sets up the backend.
+ ```
 Terraform init
 ```
   ![image](https://github.com/user-attachments/assets/6ed7356b-baa8-438d-aad0-0d09a17ea03c)
+
+2. Plan the Deployment
+- This command shows the changes Terraform will make without applying them.
   ```
   Terraform plan
-  Terraform apply
+3. Apply the Changes
+- This command applies the planned changes and provisions the resources.
+```
+Terraform apply
 ```
 
 ![image](https://github.com/user-attachments/assets/8fcd982f-0739-4ad1-979d-a6eb9c030899)
 
 
-once vpc and eks is installed check on aws
-VPC
+##  Verify AWS Resources in the AWS Console  
+
+### ✅ Check VPC Components  
+1. Go to **AWS Console → VPC**  
+2. Verify the following:  
+   - ✅ VPC is created with the correct **CIDR block**  
+   - ✅ **Subnets** (Public & Private) exist  
+   - ✅ **Internet Gateway (IGW) & NAT Gateway** are set up  
+   - ✅ **Route Tables** and **Associations** are correct  
+
+### ✅ Check EKS Cluster  
+1. Go to **AWS Console → EKS → Clusters**  
+2. Verify the following:  
+   - ✅ EKS cluster is created with the correct **name**  
+   - ✅ **Worker nodes** are in the correct **subnets**  
+   - ✅ IAM roles and security groups are properly assigned  
 
 ![image](https://github.com/user-attachments/assets/bf4c3836-1b6f-445d-821d-997711acafe7)
 
