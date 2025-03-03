@@ -164,6 +164,8 @@ Terraform apply
    - ✅ **Internet Gateway (IGW) & NAT Gateway** are set up  
    - ✅ **Route Tables** and **Associations** are correct  
 
+![image](https://github.com/user-attachments/assets/bf4c3836-1b6f-445d-821d-997711acafe7)
+
 ### ✅ Check EKS Cluster  
 1. Go to **AWS Console → EKS → Clusters**  
 2. Verify the following:  
@@ -171,10 +173,22 @@ Terraform apply
    - ✅ **Worker nodes** are in the correct **subnets**  
    - ✅ IAM roles and security groups are properly assigned  
 
-![image](https://github.com/user-attachments/assets/bf4c3836-1b6f-445d-821d-997711acafe7)
-
 EKS
 ![image](https://github.com/user-attachments/assets/dcd2d4bf-0fdf-4e7b-a409-255c1aefa593)
+
+## 4. Connect `kubectl` to the EKS Cluster  
+
+### ✅ View `kubectl` Configuration  
+To check the current `kubectl` configuration, run:  
+
+```sh
+kubectl config view
+
+### ✅ Check the Current Context  
+Verify which cluster `kubectl` is connected to:  
+
+```sh
+kubectl config current-context
 
 
 connect kubectl to the eks cluster
