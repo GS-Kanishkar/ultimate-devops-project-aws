@@ -1,50 +1,58 @@
 # This file has the complete steps i did to achieve this project 
 
-- This repository contains the complete notes for the Ultimate DevOps Project and Resume Preparation course prepared by `Abhishek Veeramalla` on Udemy.
+- This file contains the step by step process how i complete the Ultimate DevOps Project and Resume Preparation course prepared by `Abhishek Veeramalla` on Udemy.
+  
+- First I created a EC2 instance
+- then i entered into the ec2 instance
+  ``` ssh -i keypair.pem ubuntu@xxxxxxx(ec2 instance ip) ```
 
-- Documentation is organized in Sections, the same way how videos are organized in the udemy course.
-
-- First I created EC2 instance
-
-- ssh -i opentelemetry-keypair-uswest2.pem ubuntu@54.244.87.69
-
+- Then i installed all the necessary binaries to run this project
+  ### kubectl
 - Install kubectl binary with curl on Linux
--    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  ```  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" ```
 - Validate the binary (optional)
--   curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
--   echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+ ```  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256" ```
+ ```  echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check ```
+  
 - ![image](https://github.com/user-attachments/assets/2b3edd8a-97ff-42a5-a2d4-2176d7bd5e23)
-- 
-Install kubectl
-  sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-  kubectl version --client
+
+- Install kubectl
+  ``` sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl ```
+- cmd to check the kubectl version
+  ``` kubectl version --client ```
+  
   ![image](https://github.com/user-attachments/assets/3dd5ef59-3cde-4324-83b5-f0733fe004eb)
 
+### Terraform
+- official docs
+``` https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli ```
 
-
-Terraform install https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
-
-  sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
-
+``` sudo apt-get update && sudo apt-get install -y gnupg software-properties-common ```
+- Install the HashiCorp GPG key
+```
   wget -O- https://apt.releases.hashicorp.com/gpg | \
 gpg --dearmor | \
 sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
-
+```
+- Verify the key's fingerprint.
+```
 gpg --no-default-keyring \
 --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
 --fingerprint
-
+```
+- Add the official HashiCorp repository to your system
+```
 echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
 https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
 sudo tee /etc/apt/sources.list.d/hashicorp.list
-
-
-sudo apt update
-
-sudo apt-get install terraform
-
-terraform -help
-terraform --version
+```
+- Download the package information from HashiCorp
+``` sudo apt update ```
+- Install Terraform 
+``` sudo apt-get install terraform ```
+- Verify the installation
+``` terraform -help ```
+``` terraform --version ```
 
 ![image](https://github.com/user-attachments/assets/ea94131e-f4d3-455f-a022-e5b9e91b126a)
 
