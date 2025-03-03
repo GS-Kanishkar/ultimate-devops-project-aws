@@ -192,7 +192,6 @@ Verify which cluster kubectl is connected to:
 ```sh
 kubectl config current-context
 ```
-
 ![image](https://github.com/user-attachments/assets/e030849b-d936-420e-9f95-cf5f360088b7)
 
 ### Run the following command to connect kubectl to the EKS cluster
@@ -205,13 +204,37 @@ kubectl config current-context
 
 ![image](https://github.com/user-attachments/assets/0341233c-3e91-48fe-bec1-79a3bd7d3db2)
 
+
+## Deploy Kubernetes Manifests in EKS
+
+Once connected to the EKS cluster, follow these steps to deploy all Kubernetes manifest files.  
+
+### ✅ 1. Apply the Service Account  
+Check if the service account exists:  
+
+```sh
 kubectl get sa
+```
 
 ![image](https://github.com/user-attachments/assets/64ff9b1e-ecea-4023-9491-aabfca8b088c)
 
+### ✅ 2. Apply All Kubernetes Deployment & Service Manifests
+Apply the Kubernetes manifests using the following command:
+```
  kubectl apply -f complete-deploy.yaml
- kubectl get po
+```
+### ✅ 3. Verify Deployment
+ Once all are applied, run below cmd to check all pods are running
+
+ ```
+kubectl get po
+```
+cmd to check all svc are up
+```
+ kubectl get svc
+```
 ![image](https://github.com/user-attachments/assets/f39e173f-f6e9-43cf-9850-0e8ba8f9bff3)
+
 
 We can access these app if we change the frontendproxy to loadbalancer - but that not a best practise we can use ingress controller to access the main page
 
