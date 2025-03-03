@@ -6,13 +6,13 @@
   
   ``` ssh -i keypair.pem ubuntu@xxxxxxx(ec2 instance ip) ```
 
-  ### Below Binaries are installed for thsi Project
+  ### Below Binaries are installed for this Project
 - Kubectl
 - Terraform
 
   
   ### kubectl
-- Official Docs
+- Official Docs to install the kubectl
   ```
   https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
   ```
@@ -41,10 +41,14 @@ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stabl
   ![image](https://github.com/user-attachments/assets/3dd5ef59-3cde-4324-83b5-f0733fe004eb)
 
 ### Terraform
-- official docs
-``` https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli ```
+- Official docs to install the Terraform
+```
+https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
+```
 
-``` sudo apt-get update && sudo apt-get install -y gnupg software-properties-common ```
+``` 
+sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
+```
 - Install the HashiCorp GPG key
 ```
   wget -O- https://apt.releases.hashicorp.com/gpg | \
@@ -64,12 +68,18 @@ https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
 sudo tee /etc/apt/sources.list.d/hashicorp.list
 ```
 - Download the package information from HashiCorp
-``` sudo apt update ```
+```
+sudo apt update
+```
 - Install Terraform 
-``` sudo apt-get install terraform ```
+```
+sudo apt-get install terraform
+```
 - Verify the installation
-``` terraform -help ```
-``` terraform --version ```
+```
+terraform -help
+terraform --version
+ ```
 
 ![image](https://github.com/user-attachments/assets/ea94131e-f4d3-455f-a022-e5b9e91b126a)
 
