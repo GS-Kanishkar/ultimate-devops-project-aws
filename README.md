@@ -9,6 +9,7 @@
   ### Below Binaries are installed for this Project
 - Kubectl
 - Terraform
+- Git
 
   
   ### kubectl
@@ -83,42 +84,63 @@ terraform --version
 
 ![image](https://github.com/user-attachments/assets/ea94131e-f4d3-455f-a022-e5b9e91b126a)
 
+### Git Installation
 
-Git installation 
-   sudo apt install git-all
-   git clone ..
-
-Install aws cli
-
+   ```
+sudo apt install git-all
+```
+### AWS CLI Installation
+- Official Docs to install the AWS CLI
+```
+https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+```
+- To install AWS CLI we need unzip to be installed
+```
   sudo apt update && sudo apt install unzip -y
-
+```
+- Download the AWS CLI installation file
+```
   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
-
+```
+- To check the aws version
+```
 aws --version
-
+```
 ![image](https://github.com/user-attachments/assets/c3c48036-ad74-4d0a-8036-80f553db2902)
 
-aws configure
+- After AWS CLI Installation , we need to connect from the ec2
 
+  aws configure
   AWS Access Key ID [None]: YOUR_ACCESS_KEY
   AWS Secret Access Key [None]: YOUR_SECRET_KEY
   Default region name [None]: us-west-2  # Change to us-west-2
   Default output format [None]: json
 
-Create S3 bucket
-  terraform-eks-state-bucket-kani
-Create Dynomo db table
-  ![image](https://github.com/user-attachments/assets/a9b9a91c-c192-4c1a-bed2-4736a76192e9)
+### S3 Bucket creation ( Backend Storage for Terraform State )
 
-  Terraform init
+-  Terraform needs to store its state file (terraform.tfstate) to track resources.Instead of storing it locally, we use S3 to ensure state persistence, collaboration, and versioning.
+ - Create a S3 Bucket with a unique name for the terraform state locking
+ -  Go to AWS Console → S3 → Create Bucket (e.g., terraform-state-bucket).
+   ![image](https://github.com/user-attachments/assets/a9b9a91c-c192-4c1a-bed2-4736a76192e9)
 
+### DynamoDB (State Locking) 
+- When multiple people run Terraform, there's a risk of state corruption if two apply commands run at the same time.DynamoDB provides state locking to prevent concurrent modifications.
+Go to AWS Console → DynamoDB → Create Table
+-- Table Name: terraform-state-lock
+-- Partition Key: LockID (String)
+
+####After creation of s3 and Terraform , we are good to create the AWS Resourses ( VPC components , EKS)
+
+  ```
+Terraform init
+```
   ![image](https://github.com/user-attachments/assets/6ed7356b-baa8-438d-aad0-0d09a17ea03c)
-  
+  ```
   Terraform plan
-  
   Terraform apply
+```
 
 ![image](https://github.com/user-attachments/assets/8fcd982f-0739-4ad1-979d-a6eb9c030899)
 
