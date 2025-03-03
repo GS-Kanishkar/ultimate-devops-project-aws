@@ -10,9 +10,12 @@
 - Kubectl
 - Terraform
 - Git
+- AWS CLI
+- Eksctl -> CLI tool for creating and managing EKS clusters.
+- Helm   -> Package manager for Kubernetes
 
   
-  ### kubectl
+  ### 🔹 Kubectl Installation
 - Official Docs to install the kubectl
   ```
   https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
@@ -41,7 +44,7 @@ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stabl
   
   ![image](https://github.com/user-attachments/assets/3dd5ef59-3cde-4324-83b5-f0733fe004eb)
 
-### Terraform
+### 🔹 Terraform Installation
 - Official docs to install the Terraform
 ```
 https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
@@ -84,12 +87,12 @@ terraform --version
 
 ![image](https://github.com/user-attachments/assets/ea94131e-f4d3-455f-a022-e5b9e91b126a)
 
-### Git Installation
+### 🔹 Git Installation
 
    ```
 sudo apt install git-all
 ```
-### AWS CLI Installation
+### 🔹 AWS CLI Installation
 - Official Docs to install the AWS CLI
 ```
 https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
@@ -118,6 +121,50 @@ aws --version
   Default region name [None]: us-west-2  # Change to us-west-2
   Default output format [None]: json
 ```
+
+### 🔹 `eksctl` Installation
+`eksctl` is the official CLI tool for **creating and managing Amazon EKS clusters**.  
+
+# For ARM systems, set ARCH to: `arm64`, `armv6`, or `armv7`
+```
+ARCH=amd64
+PLATFORM=$(uname -s)_$ARCH
+```
+
+# Download eksctl binary
+```
+curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
+```
+
+# (Optional) Verify checksum
+```
+curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check
+```
+
+# Extract and move to /usr/local/bin
+```
+tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
+sudo mv /tmp/eksctl /usr/local/bin
+```
+
+![image](https://github.com/user-attachments/assets/e4d201cc-dae4-4b60-9fde-ed051d105eec)
+
+### 🔹  Helm Installation
+- Official Docs to install the Helm 
+```
+https://helm.sh/docs/intro/install/
+```
+
+```
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+```
+```
+helm version
+```
+![image](https://github.com/user-attachments/assets/eacabcb4-37e0-48c2-b7dd-7ac798d90014)
+
 
 ### S3 Bucket creation ( Backend Storage for Terraform State )
 
@@ -235,28 +282,35 @@ cmd to check all svc are up
 ```
 ![image](https://github.com/user-attachments/assets/f39e173f-f6e9-43cf-9850-0e8ba8f9bff3)
 
+## ✅ Configuring IAM OIDC Provider & Load Balancer Controller
 
-We can access these app if we change the frontendproxy to loadbalancer - but that not a best practise we can use ingress controller to access the main page
+Instead of exposing the frontend proxy as a **LoadBalancer**, a better practice is to use an **Ingress Controller**. Follow these steps to configure IAM OIDC provider and install the **AWS Load Balancer Controller**.  
 
-commands to configure IAM OIDC provider
-
+### ✅ 1. Set Cluster Name & Get OIDC ID 
+```
  export cluster_name=my-eks-cluster
-
+```
+```
  oidc_id=$(aws eks describe-cluster --name $cluster_name --query "cluster.identity.oidc.issuer" --output text | cut -d '/' -f 5)
+```
 
 ![image](https://github.com/user-attachments/assets/940454f3-8f70-4d68-b333-46271368634a)
 
-
-Download IAM policy
+### ✅ 2. Download IAM Policy
+Download the required IAM policy for the Load Balancer Controller:
+```
 curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.11.0/docs/install/iam_policy.json
-
-Create IAM Policy
-
+```
+### ✅ 3. Create IAM Policy
+Create a new IAM policy from the downloaded file:
+```
 aws iam create-policy \
     --policy-name AWSLoadBalancerControllerIAMPolicy \
     --policy-document file://iam_policy.json
+```
+### ✅ 4. Create IAM Role & Attach Policy
+Create an IAM service account and attach the policy to allow EKS to use the AWS Load Balancer Controller:
 
-Create IAM Role
 ```
 eksctl create iamserviceaccount \
   --cluster=my-eks-cluster \
@@ -267,45 +321,25 @@ eksctl create iamserviceaccount \
   --override-existing-serviceaccounts \
   --approve
 ```
+Now, the AWS Load Balancer Controller is set up, and we can proceed with Ingress configuration! 🚀
 
-Installing eksctl
-```
-# for ARM systems, set ARCH to: `arm64`, `armv6` or `armv7`
-ARCH=amd64
-PLATFORM=$(uname -s)_$ARCH
+### 🔹 Deploy ALB controller
 
-curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
+To manage ingress traffic efficiently, we need to deploy the **AWS Load Balancer Controller** using Helm. 
 
-# (Optional) Verify checksum
-curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check
+###  Add & Update the Helm Repository
 
-tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
-
-sudo mv /tmp/eksctl /usr/local/bin
+``` 
+helm repo add eks https://aws.github.io/eks-charts
 ```
 
-![image](https://github.com/user-attachments/assets/e4d201cc-dae4-4b60-9fde-ed051d105eec)
-
-
-Install helm
-
+``` 
+helm repo update eks
 ```
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-chmod 700 get_helm.sh
-./get_helm.sh
-```
-helm version
-
-![image](https://github.com/user-attachments/assets/eacabcb4-37e0-48c2-b7dd-7ac798d90014)
-
-Deploy ALB controller
-
-``` helm repo add eks https://aws.github.io/eks-charts ```
-
-``` helm repo update eks```
 
 ![image](https://github.com/user-attachments/assets/da836e36-72d7-4438-8ced-4c937b0fa5fa)
 
+###   Install the AWS Load Balancer Controller
 
 ```
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller \            
@@ -316,7 +350,11 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   --set region=us-west-2 \
   --set vpcId=vpc-0b1557cc1549be9be
 ```
+
 ![image](https://github.com/user-attachments/assets/a6af23fe-3659-4c23-b5f1-095f70a08872)
+
+### ✅ 3. Verify the Deployment
+Check if the pods and deployment are running:
 
 ``` kubectl get po -n kube-system ```
  ``` kubectl get deploy -n kube-system ```
